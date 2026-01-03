@@ -187,12 +187,13 @@ main (int argc, char *argv[])
 	}
 
 	if (verbose) {
-	    fprintf(stderr, "%s: extracting %#016lx-%#016lx (at %lx)\n",
+	    fprintf(stderr, "%s: extracting %#016lx-%#016llx (at %lx)\n",
 		    prog_name, (long) elf_phdr->p_vaddr,
 		    elf_phdr->p_vaddr + fil_size, offset);
 	}
     } else
 #endif
+#ifdef __alpha__
     {
 	aout = (struct exec *) buf;
 
@@ -223,7 +224,7 @@ main (int argc, char *argv[])
 		    aout->ah.text_start + fil_size, offset);
 	}
     }
-
+#endif
     if (lseek(fd, offset, SEEK_SET) != offset) {
 	perror("lseek");
 	exit(1);

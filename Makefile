@@ -7,6 +7,19 @@
 #
 # Copyright (c) 1995, 1996 by David Mosberger (davidm@cs.arizona.edu)
 #
+# ==== Cross-compile / toolchain setup ===================================
+
+
+ifeq ($(ARCH),alpha)
+CROSS_COMPILE  ?= alpha-unknown-linux-gnu-
+endif
+
+CC             = $(CROSS_COMPILE)gcc
+LD             = $(CROSS_COMPILE)ld
+AR             = $(CROSS_COMPILE)ar
+OBJCOPY        = $(CROSS_COMPILE)objcopy
+OBJDUMP        = $(CROSS_COMPILE)objdump
+STRIP          = $(CROSS_COMPILE)strip
 
 # location of linux kernel sources (must be absolute path):
 KSRC		= /usr/src/linux
@@ -140,7 +153,7 @@ lib/%:
 	make -C lib $* CPPFLAGS="$(CPPFLAGS)" TESTING="$(TESTING)"
 
 tools/%:
-	make -C tools $* CPPFLAGS="$(CPPFLAGS)"
+	$(MAKE) -C tools $*
 
 sdisklabel/%:
 	make -C sdisklabel $* CPPFLAGS="$(CPPFLAGS)"
